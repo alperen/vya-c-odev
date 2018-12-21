@@ -1,3 +1,4 @@
+/* ALPEREN TÜRKÖZ - 171601037 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
@@ -5,6 +6,9 @@
 
 #define MAX_NONCE 10
 #define HOT_PATATO_USER_COUNT 5
+
+void siralamaEkrani();
+void sicakPatatesEkrani();
 
 const char* Names[] = {
 	"Gelicem Nerdesin",
@@ -27,8 +31,33 @@ int randRange(int min,int max){
 	return rand() % (max + 1 - min) + min;
 }
 
+/**/
+
 void mainMenu(){
-	printf("Main");
+	short int selection;
+	do
+	{
+		printf("|--- SECIMINIZI YAPIN ---|\n");
+		printf("| Siralama      icin: [1]|\n");
+		printf("| Sicak Patates icin: [2]|\n");
+		printf("| Cikis yapmak  icin: [3]|\n\n");
+		printf("Secim bekleniyor:");
+		scanf("%d", &selection);
+
+		clear();
+
+		if (selection == 1)
+		{
+			siralamaEkrani();
+			break;
+		}
+		else if (selection == 2)
+		{
+			sicakPatatesEkrani();
+			break;
+		}
+
+	} while (selection != 3);
 }
 
 void askMainMenu(){
@@ -60,7 +89,6 @@ struct Queue
 struct Node
 {
 	int value;
-	struct Node *prev;
 	struct Node *next;
 };
 
@@ -85,10 +113,11 @@ QUEUE_POINTER createQueue(){
 STACK_POINTER createStack(){
 	STACK_POINTER newStack = (STACK_POINTER)malloc(sizeof(struct Stack));
 	newStack->count = 0;
+
 	return newStack;
 }
 
-void push(STACK_POINTER stack, int value){
+void pushStack(STACK_POINTER stack, int value){
 	NODE_POINTER newNode = createNode();
 	newNode->value = value;
 	newNode->next = stack->top;
@@ -120,7 +149,7 @@ void printStack(STACK_POINTER stack){
 	}
 }
 
-int pop(STACK_POINTER stack){
+int popStack(STACK_POINTER stack){
 	NODE_POINTER top = stack->top;
 	int value = top->value;
 	if (stack->count == 0)
@@ -203,14 +232,14 @@ void siralamaEkrani(){
 
 		int lastInsert = AStack->top->value;
 		while(number > lastInsert && AStack->count != 0){
-			push(BStack,lastInsert);
-			lastInsert = pop(AStack);
+			pushStack(BStack,lastInsert);
+			lastInsert = popStack(AStack);
 		}
 
-		push(AStack,number);/// 9 8 7 3 5
+		pushStack(AStack,number);/// 9 8 7 3 5
 
 		while(BStack->count != 0){
-			push(AStack,pop(BStack));
+			pushStack(AStack,popStack(BStack));
 		}
 
 		//	push(AStack, number);
@@ -235,11 +264,11 @@ void siralamaEkrani(){
 	if (secim == 1)
 	{
 		STACK_POINTER tempAStack = AStack;
-		int value = pop(AStack);
+		int value = popStack(AStack);
 		while (value != -1)
 		{
-			push(BStack, value);
-			value = pop(AStack);
+			pushStack(BStack, value);
+			value = popStack(AStack);
 		}
 		AStack = tempAStack;
 
@@ -253,6 +282,7 @@ QUEUE_POINTER Users;
 
 char progress(int x){
 	char *a = "\\/_|";
+
 	return (char) a[x];
 }
 
@@ -265,14 +295,13 @@ void sicakPatatesEkrani()
 	}
 	showQueue(Users);
 	
-	int loop = 1;
+	//int loop = 1;
 
 	int gameDuration = randRange(10,25);
 	int seconds = 1;
 	int keepDuration = randRange(1,3);	
  
 	while(1){
-		loop++;
 		clear();
 		showQueue(Users);
 		printf("\n| PATATES : %s |", Names[Users->front->value]);
@@ -289,40 +318,24 @@ void sicakPatatesEkrani()
 		Sleep(1000);
 		seconds += 1;
 		if(gameDuration == seconds){
-			break;
+
+			if(Users->front == NULL)
+				break;
+
+			printf("| YANAN KISI: %s |\n",Names[Users->front->value]);
+			popQueue(Users);
+			Sleep(2000);
+			seconds = 0;
+			int gameDuration = randRange(10,25);
 		}
 	}
-	printf("| YANAN KISI: %s |\n",Names[Users->front->value]);
+	
 	askMainMenu();
 }
 
 int main(int argc, char *argv[])
 {
-
-	short int selection;
-	do
-	{
-		printf("|--- SECIMINIZI YAPIN ---|\n");
-		printf("| Siralama      icin: [1]|\n");
-		printf("| Sicak Patates icin: [2]|\n");
-		printf("| Cikis yapmak  icin: [3]|\n\n");
-		printf("Secim bekleniyor:");
-		scanf("%d", &selection);
-
-		clear();
-
-		if (selection == 1)
-		{
-			siralamaEkrani();
-			break;
-		}
-		else if (selection == 2)
-		{
-			sicakPatatesEkrani();
-			break;
-		}
-
-	} while (selection != 3);
+	mainMenu();
 
 	return 0;
 }
