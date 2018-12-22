@@ -1,0 +1,5 @@
+/node_modules
+/*.exe
+Makefile.win
+Odev.dev
+Odev.layout
