@@ -233,10 +233,11 @@ void siralamaEkrani(){
 		int lastInsert = AStack->top->value;
 		while(number > lastInsert && AStack->count != 0){
 			pushStack(BStack,lastInsert);
-			lastInsert = popStack(AStack);
+			popStack(AStack);
+			lastInsert = AStack->top->value;
 		}
 
-		pushStack(AStack,number);/// 9 8 7 3 5
+		pushStack(AStack,number);
 
 		while(BStack->count != 0){
 			pushStack(AStack,popStack(BStack));
@@ -248,7 +249,7 @@ void siralamaEkrani(){
 
 		if (nonce != MAX_NONCE)
 		{
-			clear();
+			//clear();
 		}
 	}
 
@@ -272,9 +273,11 @@ void siralamaEkrani(){
 		}
 		AStack = tempAStack;
 
-		showStack(tempAStack, "KUCUKTEN BUYUGE");
+		showStack(AStack, "KUCUKTEN BUYUGE");
 		showStack(BStack, "BUYUKTEN KUCUGE");
 	}
+
+	askMainMenu();
 }
 
 /* Program */
