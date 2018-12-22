@@ -4,7 +4,7 @@
 #include <windows.h>
 #include <time.h>
 
-#define MAX_NONCE 10
+#define MAX_NONCE 15
 #define HOT_PATATO_USER_COUNT 5
 
 void siralamaEkrani();
@@ -264,16 +264,15 @@ void siralamaEkrani(){
 
 	if (secim == 1)
 	{
-		STACK_POINTER tempAStack = AStack;
+		showStack(AStack, "KUCUKTEN BUYUGE");
+
 		int value = popStack(AStack);
 		while (value != -1)
 		{
 			pushStack(BStack, value);
 			value = popStack(AStack);
 		}
-		AStack = tempAStack;
-
-		showStack(AStack, "KUCUKTEN BUYUGE");
+		
 		showStack(BStack, "BUYUKTEN KUCUGE");
 	}
 
