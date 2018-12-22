@@ -71,6 +71,12 @@ void askMainMenu(){
 	}
 }
 
+char progress(int x){
+	char *a = "\\/_|";
+
+	return (char) a[x];
+}
+
 /* Siralama Ekrani icin: */
 
 struct Stack
@@ -281,12 +287,6 @@ void siralamaEkrani(){
 
 /* Program */
 QUEUE_POINTER Users;
-
-char progress(int x){
-	char *a = "\\/_|";
-
-	return (char) a[x];
-}
 
 void sicakPatatesEkrani()
 {
