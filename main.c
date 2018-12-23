@@ -142,6 +142,7 @@ void pushQueue(QUEUE_POINTER queue,int value){
 	newNode->value = value;
 	newNode->next = queue->front;
 	queue->rear = newNode;
+	queue->count++;
 }
 
 void printStack(STACK_POINTER stack){
@@ -183,6 +184,8 @@ int popQueue(QUEUE_POINTER  queue){
 		queue->front = temp->next;
 		queue->rear->next = queue->front;
 	}
+
+	queue->count--;
 
 	return value;
 }
@@ -255,7 +258,7 @@ void siralamaEkrani(){
 
 		if (nonce != MAX_NONCE)
 		{
-			//clear();
+			clear();
 		}
 	}
 
@@ -292,7 +295,7 @@ void sicakPatatesEkrani()
 {
 	Users = createQueue();
 
-	for(int i = 0; i < HOT_PATATO_USER_COUNT; i++){
+	for(int i = 0; i < 2; i++){
 		pushQueue(Users,i);
 	}
 	showQueue(Users);
@@ -321,11 +324,13 @@ void sicakPatatesEkrani()
 		seconds += 1;
 		if(gameDuration == seconds){
 
-			if(Users->front == NULL)
-				break;
-
 			printf("| YANAN KISI: %s |\n",Names[Users->front->value]);
 			popQueue(Users);
+
+			if(Users->count == 1){
+				break;
+			}
+
 			Sleep(2000);
 			seconds = 0;
 			int gameDuration = randRange(10,25);
